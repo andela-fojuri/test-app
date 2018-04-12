@@ -1,10 +1,5 @@
 
-const MainApp = require('./mainApp')
 const { handleErrors } = require('./common');
-// const customData = require('./api.js')
-
-
-// const LOGIN_URL = `${options.endpoint}/login`;
 
 const options = {
   stage: 'dev',
@@ -102,17 +97,15 @@ const civicSipLogin = () => Promise.resolve(civicSip.signup({ scopeRequest: civi
 
 
 const apiLoginSuccess = (sessionToken, expires) => (dispatch) => {
-  console.log(sessionToken, 'myToken')
   dispatch({
     type: LOGIN_SUCCESS,
     sessionToken,
     expires,
   });
-
 };
 
 function sessionLogin(authToken) {
-  return dispatch => fetch('https://test-library-app.herokuapp.com/login', {
+  return dispatch => fetch('https://7kc91jmvea.execute-api.us-east-1.amazonaws.com/dev/login', {
     body: JSON.stringify({ authToken }),
     headers: {
       'content-type': 'application/json',
@@ -120,7 +113,7 @@ function sessionLogin(authToken) {
     method: 'POST',
     mode: 'cors',
   }).then(handleErrors)
-    .then(response => response)
+    .then(response => response.json())
     .then(body => dispatch(apiLoginSuccess(body.sessionToken, sessionService.getExpiry())));
 }
 

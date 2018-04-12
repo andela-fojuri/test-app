@@ -38,13 +38,14 @@ class App extends Component {
           component={MainApp}
         />
         {this.props.redirect && <Redirect to ={'/login'}/>}
-        <div className="App">
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">Welcome to React</h1>
-          </header>
-          <button onClick={this.handleLogin}> Log in with civic </button>
-        </div>
+        <Route path="/" render={() =>
+          <div className="App">
+            <header className="App-header">
+              <img src={logo} className="App-logo" alt="logo" />
+              <h1 className="App-title">Welcome to React</h1>
+            </header>
+            <button onClick={this.handleLogin}> Log in with civic </button>
+          </div>} />
        </Switch>
       </BrowserRouter>
     );
