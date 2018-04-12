@@ -3,12 +3,13 @@ import logo from './logo.svg';
 import './App.css';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { initActions } from './init';
 import { login, logout } from './login'
+import MainApp from './mainApp'
 
 class App extends Component {
-
   constructor(props) {
     super(props);
     this.handleLogin = this.handleLogin.bind(this);
@@ -30,16 +31,22 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <button> Log in with civic </button>
-      </div>
+      <BrowserRouter> 
+      <Switch>
+        <Route
+          path="/login"
+          component={MainApp}
+        />
+        {this.props.redirect && <Redirect to ={'/login'}/>}
+        <div className="App">
+          <header className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <h1 className="App-title">Welcome to React</h1>
+          </header>
+          <button onClick={this.handleLogin}> Log in with civic </button>
+        </div>
+       </Switch>
+      </BrowserRouter>
     );
   }
 }
@@ -59,18 +66,20 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export const mapStateToProps = state => ({
-  session: state.login.session
-});
+    session: state.login.session,
+    redirect: state.login.redirect,
+})
 
 App.propTypes = {
   session: PropTypes.shape({
     error: PropTypes.string
-  }).isRequired,
+  }),
   init: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
+
 };
 
 // withRouter is required here to ensure the UI gets redrawn on route changes. This may change in future versions of react-router
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
 

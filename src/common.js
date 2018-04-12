@@ -1,8 +1,10 @@
 import store from './store'
 
 export function handleErrors(response) {
-  if (!response.ok) {
-    throw Error(response.statusText);
+  if (!response) {
+    throw new Error(response.statusText);
+  } else if (response) {
+      return response;
   }
   return response;
 }
