@@ -112,7 +112,7 @@ const apiLoginSuccess = (sessionToken, expires) => (dispatch) => {
 };
 
 function sessionLogin(authToken) {
-  return dispatch => fetch('http://localhost:3006/login', {
+  return dispatch => fetch('https://test-library-app.herokuapp.com/login', {
     body: JSON.stringify({ authToken }),
     headers: {
       'content-type': 'application/json',
