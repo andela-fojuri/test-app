@@ -1,3 +1,4 @@
+/*eslint no-undef: */
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
@@ -6,14 +7,16 @@ import { withRouter } from 'react-router-dom';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { initActions } from './init';
-import { login, logout } from './login'
+import { loginService } from './login'
 import MainApp from './mainApp'
+
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
+
   }
 
   componentWillMount() {
@@ -37,7 +40,7 @@ class App extends Component {
           path="/login"
           component={MainApp}
         />
-        {this.props.redirect && <Redirect to ={'/login'}/>}
+        {this.props.session.token && <Redirect to ={'/login'}/>}
         <Route path="/" render={() =>
           <div className="App">
             <header className="App-header">
@@ -52,23 +55,22 @@ class App extends Component {
   }
 }
 
+
 const handleError = error => {
   console.error(error);
 };
-
 
 const mapDispatchToProps = dispatch => ({
   init: () => {
     // this takes all initActions (i.e. actions that must be performed on startup and dispatches them using redux dispatch
     initActions.map(action => dispatch(action).catch(handleError));
   },
-  login: () => dispatch(login()),
-  logout: () => dispatch(logout())
+  login: () => dispatch(loginService.login()),
+  logout: () => dispatch(loginService.logout())
 });
 
 export const mapStateToProps = state => ({
     session: state.login.session,
-    redirect: state.login.redirect,
 })
 
 App.propTypes = {

@@ -3,11 +3,11 @@
  */
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
-import { reducer } from './login'
+import {loginService } from './login'
 
 export const initActions = [/** no initial actions **/];
 
 export default combineReducers({
   router: routerReducer, // enables interaction between redux and the react-router
-  login: reducer
+  login: loginService.reducer
 });
